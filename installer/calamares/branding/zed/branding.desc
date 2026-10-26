@@ -1,0 +1,33 @@
+---
+componentName: zed
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 1100px,740px
+windowPlacement: center
+sidebar: widget
+navigation: widget
+strings:
+    productName:         "Zed"
+    shortProductName:    "Zed"
+    version:             "@version@"
+    shortVersion:        "@version@"
+    versionedName:       "Zed @version@"
+    shortVersionedName:  "Zed @version@"
+    bootloaderEntryName: "Zed"
+    productUrl:          "https://github.com/SwashX-dev/Zed"
+    supportUrl:          "https://github.com/SwashX-dev/Zed/issues"
+    knownIssuesUrl:      "https://github.com/SwashX-dev/Zed/blob/main/docs/LIMITATIONS.md"
+    releaseNotesUrl:     "https://github.com/SwashX-dev/Zed/releases"
+images:
+    productIcon:     "zed-logo.png"
+    productLogo:     "zed-logo.png"
+    productWelcome:  "welcome.png"
+style:
+    SidebarBackground:        "#0b0b0d"
+    SidebarText:              "#c8c8ce"
+    SidebarTextCurrent:       "#ffffff"
+    SidebarBackgroundCurrent: "#c41e3a"
+slideshow:    "show.qml"
+slideshowAPI: 2
+# No uploadServer: Zed never uploads installer logs.

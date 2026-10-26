@@ -1,0 +1,52 @@
+{
+  "comment": "Installation profiles. Each is a starting managed state (see state.py); after installation everything in it can be changed with zed or Blueprint. The `profiles` flake check evaluates every profile.",
+  "profiles": [
+    {
+      "id": "minimal",
+      "title": "Zed Minimal",
+      "description": "Text console only: the s6 base system, networking, the firewall and the zed system manager. For servers, containers and building your own setup.",
+      "desktop": false,
+      "state": { "packages": [], "collections": [], "settings": {} }
+    },
+    {
+      "id": "desktop",
+      "title": "Zed Desktop",
+      "description": "The Zed desktop with a web browser, file manager, terminal and media basics. No security tools are preinstalled; add them any time with Zed Arsenal or `zed install`.",
+      "desktop": true,
+      "state": { "packages": ["firefox"], "collections": [], "settings": {} }
+    },
+    {
+      "id": "privacy",
+      "title": "Zed Privacy",
+      "description": "The desktop with the private network profile (randomised MAC addresses, no host name in DHCP, IPv6 privacy addresses), Tor Browser, Mullvad Browser, KeePassXC, OnionShare and metadata cleaning tools. It does not make the computer anonymous.",
+      "desktop": true,
+      "state": {
+        "packages": ["tor-browser", "mullvad-browser", "keepassxc", "onionshare-gui", "metadata-cleaner", "mat2", "torsocks", "wireguard-tools"],
+        "collections": ["cryptography"],
+        "settings": { "privacy.profile": "private" }
+      }
+    },
+    {
+      "id": "security",
+      "title": "Zed Security Essentials",
+      "description": "The desktop with Zed's network analysis, web assessment, forensics, reverse engineering, cryptography and incident response collections, for authorised testing and defence of systems you own or have permission to assess.",
+      "desktop": true,
+      "state": {
+        "packages": ["firefox"],
+        "collections": ["network-analysis", "web-assessment", "forensics", "reverse-engineering", "cryptography", "incident-response"],
+        "settings": {}
+      }
+    },
+    {
+      "id": "complete",
+      "title": "Zed Complete",
+      "description": "Everything in Privacy and Security Essentials plus password auditing and wireless analysis. The largest installation (several GB).",
+      "desktop": true,
+      "state": {
+        "packages": ["firefox", "tor-browser", "mullvad-browser", "keepassxc", "onionshare-gui", "metadata-cleaner", "mat2", "torsocks", "wireguard-tools"],
+        "collections": ["network-analysis", "web-assessment", "forensics", "reverse-engineering", "password-auditing", "cryptography", "incident-response", "wireless"],
+        "settings": { "privacy.profile": "private" }
+      }
+    }
+  ]
+}

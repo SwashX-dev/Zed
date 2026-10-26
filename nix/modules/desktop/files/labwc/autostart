@@ -1,0 +1,2 @@
+# Zed session components for labwc.  ~/.config/labwc/autostart replaces this file.
+zed-session-ready labwc &

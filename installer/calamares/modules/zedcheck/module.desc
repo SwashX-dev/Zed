@@ -1,0 +1,6 @@
+# Checks the selections before any disk is changed.
+---
+type: "job"
+name: "zedcheck"
+interface: "python"
+script: "main.py"

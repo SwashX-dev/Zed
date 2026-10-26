@@ -1,0 +1,74 @@
+// Zed boot splash: logo, wordmark, crimson progress line, and a password
+// prompt for encrypted disks.
+
+Window.SetBackgroundTopColor(0.031, 0.031, 0.039);
+Window.SetBackgroundBottomColor(0.031, 0.031, 0.039);
+
+screen_w = Window.GetWidth();
+screen_h = Window.GetHeight();
+
+logo.image = Image("logo.png");
+scale = Math.Min(screen_h * 0.28 / logo.image.GetHeight(), 1);
+logo.image = logo.image.Scale(logo.image.GetWidth() * scale, logo.image.GetHeight() * scale);
+logo.sprite = Sprite(logo.image);
+logo.x = screen_w / 2 - logo.image.GetWidth() / 2;
+logo.y = screen_h * 0.40 - logo.image.GetHeight() / 2;
+logo.sprite.SetPosition(logo.x, logo.y, 1);
+
+word.image = Image("wordmark.png");
+word.sprite = Sprite(word.image);
+word.sprite.SetPosition(screen_w / 2 - word.image.GetWidth() / 2, logo.y + logo.image.GetHeight() + 28, 1);
+
+// Progress line under the wordmark.
+bar.w = screen_w * 0.22;
+bar.x = screen_w / 2 - bar.w / 2;
+bar.y = logo.y + logo.image.GetHeight() + 28 + word.image.GetHeight() + 30;
+track.image = Image("track.png").Scale(bar.w, 3);
+track.sprite = Sprite(track.image);
+track.sprite.SetPosition(bar.x, bar.y, 1);
+fill.base = Image("fill.png");
+fill.sprite = Sprite();
+fill.sprite.SetPosition(bar.x, bar.y, 2);
+
+fun progress_callback(duration, progress) {
+    w = Math.Max(1, Math.Int(bar.w * progress));
+    fill.sprite.SetImage(fill.base.Scale(w, 3));
+}
+Plymouth.SetBootProgressFunction(progress_callback);
+
+// Password prompt (disk encryption).
+prompt.sprite = Sprite();
+bullets.sprite = Sprite();
+box.image = Image("prompt.png");
+box.sprite = Sprite(box.image);
+box.sprite.SetOpacity(0);
+box.x = screen_w / 2 - box.image.GetWidth() / 2;
+box.y = bar.y + 40;
+box.sprite.SetPosition(box.x, box.y, 3);
+
+fun display_password_callback(prompt_text, bullet_count) {
+    box.sprite.SetOpacity(1);
+    prompt.sprite.SetImage(Image.Text(prompt_text, 0.95, 0.95, 0.96, 1, "Inter 14"));
+    prompt.sprite.SetPosition(box.x + 20, box.y + 14, 4);
+    stars = "";
+    for (i = 0; i < bullet_count && i < 48; i++) stars += "•";
+    bullets.sprite.SetImage(Image.Text(stars, 0.77, 0.12, 0.23, 1, "Inter 18"));
+    bullets.sprite.SetPosition(box.x + 20, box.y + 44, 4);
+}
+
+fun display_normal_callback() {
+    box.sprite.SetOpacity(0);
+    prompt.sprite.SetImage(Image.Text("", 1, 1, 1));
+    bullets.sprite.SetImage(Image.Text("", 1, 1, 1));
+}
+
+Plymouth.SetDisplayPasswordFunction(display_password_callback);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+
+// Status messages (e.g. fsck) under the bar.
+message.sprite = Sprite();
+fun message_callback(text) {
+    message.sprite.SetImage(Image.Text(text, 0.43, 0.43, 0.46, 1, "Inter 12"));
+    message.sprite.SetPosition(screen_w / 2 - message.sprite.GetImage().GetWidth() / 2, screen_h * 0.92, 5);
+}
+Plymouth.SetMessageFunction(message_callback);

@@ -1,0 +1,6 @@
+# Writes /etc/zed and installs Zed with nixos-install.
+---
+type: "job"
+name: "zedinstall"
+interface: "python"
+script: "main.py"

@@ -1,0 +1,14 @@
+/* Zed installer: dark surfaces, crimson accents. */
+QWidget { background-color: #121216; color: #e8e8ec; font-family: "Inter"; font-size: 11pt; }
+#sidebarApp, #sidebarMenuApp { background-color: #0b0b0d; }
+QPushButton { background-color: #1f1f24; border: 1px solid #2f2f36; border-radius: 6px; padding: 6px 16px; }
+QPushButton:hover { border-color: #c41e3a; }
+QPushButton:default, QPushButton#view-button-next { background-color: #c41e3a; border-color: #c41e3a; color: #ffffff; }
+QPushButton:disabled { color: #5a5a62; background-color: #18181c; }
+QLineEdit, QComboBox, QListView, QTreeView, QTableView, QTextBrowser, QPlainTextEdit {
+  background-color: #0b0b0d; border: 1px solid #2f2f36; border-radius: 5px; selection-background-color: #c41e3a; }
+QLineEdit:focus, QComboBox:focus, QListView:focus, QTreeView:focus { border-color: #c41e3a; }
+QRadioButton::indicator:checked, QCheckBox::indicator:checked { background-color: #c41e3a; border: 1px solid #ff5a73; }
+QProgressBar { background-color: #1f1f24; border: none; border-radius: 3px; height: 8px; text-align: center; }
+QProgressBar::chunk { background-color: #c41e3a; border-radius: 3px; }
+QToolTip { background-color: #121216; color: #e8e8ec; border: 1px solid #c41e3a; }

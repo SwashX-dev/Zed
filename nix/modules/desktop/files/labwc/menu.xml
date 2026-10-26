@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!-- Zed root menu (right-click on the desktop). -->
+<openbox_menu>
+  <menu id="root-menu" label="Zed">
+    <item label="Applications"><action name="Execute" command="fuzzel"/></item>
+    <item label="Terminal"><action name="Execute" command="foot"/></item>
+    <item label="Files"><action name="Execute" command="thunar"/></item>
+    <separator/>
+    <item label="System health"><action name="Execute" command="foot -H zed doctor"/></item>
+    <separator/>
+    <item label="Lock"><action name="Execute" command="zed-lock"/></item>
+    <item label="Log out"><action name="Exit"/></item>
+    <item label="Power…"><action name="Execute" command="zed-power-menu"/></item>
+  </menu>
+</openbox_menu>

@@ -1,0 +1,30 @@
+/* Zed panel style. */
+* {
+  font-family: "Inter", "Symbols Nerd Font", sans-serif;
+  font-size: 13px;
+  min-height: 0;
+}
+window#waybar {
+  background: rgba(10, 10, 12, 0.94);
+  color: #e8e8ec;
+  border-bottom: 2px solid #c41e3a;
+}
+#custom-zed {
+  color: #c41e3a;
+  font-size: 18px;
+  padding: 0 14px 0 12px;
+  background: #16080b;
+  border-right: 1px solid #3a0f18;
+}
+#custom-zed:hover { background: #c41e3a; color: #ffffff; }
+#taskbar button { padding: 0 6px; border-radius: 0; border-bottom: 2px solid transparent; }
+#taskbar button.active { border-bottom-color: #c41e3a; background: #1c1c21; }
+#taskbar button:hover { background: #26262c; }
+#clock { font-weight: 600; letter-spacing: 0.5px; }
+#pulseaudio, #network, #battery, #tray, #custom-power { padding: 0 10px; }
+#battery.warning { color: #e8a33d; }
+#battery.critical { color: #ff5a73; }
+#network.disconnected { color: #6d6d75; }
+#custom-power { color: #ff5a73; padding-right: 14px; }
+#custom-power:hover { background: #c41e3a; color: #ffffff; }
+tooltip { background: #121216; border: 1px solid #c41e3a; border-radius: 6px; }

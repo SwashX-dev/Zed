@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!-- Zed defaults for labwc.  Override in ~/.config/labwc/rc.xml. -->
+<labwc_config>
+  <core>
+    <decoration>server</decoration>
+    <gap>6</gap>
+  </core>
+  <theme>
+    <name>Zed</name>
+    <cornerRadius>6</cornerRadius>
+    <font place="ActiveWindow"><name>Inter</name><size>11</size><weight>bold</weight></font>
+    <font place="InactiveWindow"><name>Inter</name><size>11</size></font>
+    <font place="MenuItem"><name>Inter</name><size>11</size></font>
+    <font place="OnScreenDisplay"><name>Inter</name><size>12</size></font>
+  </theme>
+  <focus>
+    <followMouse>no</followMouse>
+    <raiseOnFocus>yes</raiseOnFocus>
+  </focus>
+  <snapping>
+    <range>12</range>
+    <topMaximize>yes</topMaximize>
+  </snapping>
+  <keyboard>
+    <default/>
+    <keybind key="W-Return"><action name="Execute" command="foot"/></keybind>
+    <keybind key="W-d"><action name="Execute" command="fuzzel"/></keybind>
+    <keybind key="W-space"><action name="Execute" command="fuzzel"/></keybind>
+    <keybind key="W-e"><action name="Execute" command="thunar"/></keybind>
+    <keybind key="W-l"><action name="Execute" command="zed-lock"/></keybind>
+    <keybind key="W-q"><action name="Close"/></keybind>
+    <keybind key="W-f"><action name="ToggleMaximize"/></keybind>
+    <keybind key="W-Left"><action name="SnapToEdge" direction="left"/></keybind>
+    <keybind key="W-Right"><action name="SnapToEdge" direction="right"/></keybind>
+    <keybind key="W-Up"><action name="SnapToEdge" direction="up"/></keybind>
+    <keybind key="W-Down"><action name="SnapToEdge" direction="down"/></keybind>
+    <keybind key="Print"><action name="Execute" command="sh -c 'grim -g &quot;$(slurp)&quot; - | wl-copy'"/></keybind>
+    <keybind key="XF86AudioRaiseVolume"><action name="Execute" command="wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+"/></keybind>
+    <keybind key="XF86AudioLowerVolume"><action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"/></keybind>
+    <keybind key="XF86AudioMute"><action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"/></keybind>
+    <keybind key="XF86MonBrightnessUp"><action name="Execute" command="brightnessctl set +5%"/></keybind>
+    <keybind key="XF86MonBrightnessDown"><action name="Execute" command="brightnessctl set 5%-"/></keybind>
+  </keyboard>
+  <libinput>
+    <device category="touchpad">
+      <tap>yes</tap>
+      <naturalScroll>yes</naturalScroll>
+      <disableWhileTyping>yes</disableWhileTyping>
+    </device>
+  </libinput>
+</labwc_config>

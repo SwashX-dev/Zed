@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zed-suite"
+version = "0.1.0a1"
+description = "Zed system management: zedd, the zed CLI and the Zed desktop applications"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+zed = "zedcore.cli:main"
+zedd = "zedcore.daemon:main"
+
+[tool.setuptools.packages.find]
+where = ["core", "installer"]
+
+[tool.setuptools.package-data]
+zedcore = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit"]
+pythonpath = ["core", "installer"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "S", "UP", "SIM"]
+# S603/S607: subprocess calls are made with argument lists, never a shell;
+# executables are resolved from zedd's fixed PATH.
+ignore = ["S603", "S607"]
+
+[tool.ruff.lint.per-file-ignores]
+# Embedded Nix expressions keep their natural line length.
+"core/zedcore/nixops.py" = ["E501"]
+"tests/**" = ["S101", "S105", "S106", "S108"]

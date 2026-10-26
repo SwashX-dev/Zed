@@ -1,0 +1,616 @@
+{
+  "comment": "Settings that Zed tools (zed config, Blueprint) may change. Read by zedcore.registry (validation, UI) and nix/modules/managed.nix (mapping onto NixOS options). Entries of kind 'option' map one-to-one onto the named NixOS option; kind 'special' is interpreted by managed.nix.",
+  "sections": [
+    {
+      "id": "boot",
+      "title": "Boot"
+    },
+    {
+      "id": "kernel",
+      "title": "Kernel"
+    },
+    {
+      "id": "hardware",
+      "title": "Hardware"
+    },
+    {
+      "id": "desktop",
+      "title": "Desktop"
+    },
+    {
+      "id": "network",
+      "title": "Networking"
+    },
+    {
+      "id": "firewall",
+      "title": "Firewall"
+    },
+    {
+      "id": "services",
+      "title": "Services"
+    },
+    {
+      "id": "locale",
+      "title": "Language and time"
+    },
+    {
+      "id": "privacy",
+      "title": "Privacy"
+    },
+    {
+      "id": "security",
+      "title": "Security"
+    },
+    {
+      "id": "performance",
+      "title": "Performance"
+    },
+    {
+      "id": "nix",
+      "title": "Nix"
+    }
+  ],
+  "settings": [
+    {
+      "key": "boot.loader.timeout",
+      "kind": "option",
+      "option": [
+        "boot",
+        "loader",
+        "timeout"
+      ],
+      "section": "boot",
+      "title": "Boot menu timeout",
+      "type": "int",
+      "min": 0,
+      "max": 60,
+      "explain": "Seconds the boot menu waits before starting the default generation. Older generations stay selectable in the menu either way; 0 hides the menu unless a key is held.",
+      "example": 30
+    },
+    {
+      "key": "boot.loader.grub.configurationLimit",
+      "kind": "option",
+      "option": [
+        "boot",
+        "loader",
+        "grub",
+        "configurationLimit"
+      ],
+      "section": "boot",
+      "title": "Generations in the boot menu",
+      "type": "int",
+      "min": 2,
+      "max": 100,
+      "explain": "How many system generations the boot menu lists. Keeping several means you can boot an earlier, known-working system if an update misbehaves.",
+      "example": 2
+    },
+    {
+      "key": "kernel.package",
+      "kind": "special",
+      "section": "kernel",
+      "title": "Kernel",
+      "type": "enum",
+      "choices": [
+        "default",
+        "latest",
+        "lts-6.12"
+      ],
+      "reboot": true,
+      "explain": "default follows the NixOS release's tested kernel (6.18 series in this release). latest is the newest mainline kernel in Zed's pinned package set. lts-6.12 pins the 6.12 long-term-support series, useful for older hardware or out-of-tree drivers.",
+      "example": "lts-6.12"
+    },
+    {
+      "key": "kernel.params",
+      "kind": "option",
+      "option": [
+        "boot",
+        "kernelParams"
+      ],
+      "section": "kernel",
+      "title": "Extra kernel command-line parameters",
+      "type": "list",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.,:/=+-]{1,128}$"
+      },
+      "maxItems": 32,
+      "reboot": true,
+      "explain": "Parameters appended to the kernel command line, for example 'mitigations=auto' or 'amd_pstate=active'. Wrong parameters can stop the system from booting; earlier generations in the boot menu are unaffected.",
+      "example": [
+        "mitigations=auto"
+      ]
+    },
+    {
+      "key": "kernel.sysctl.vm.swappiness",
+      "kind": "option",
+      "option": [
+        "boot",
+        "kernel",
+        "sysctl",
+        "vm.swappiness"
+      ],
+      "section": "performance",
+      "title": "Swappiness",
+      "type": "int",
+      "min": 0,
+      "max": 200,
+      "explain": "How eagerly the kernel moves idle memory to swap. Lower values keep applications in RAM longer; the kernel default is 60.",
+      "example": 100
+    },
+    {
+      "key": "hardware.nvidiaDriver",
+      "kind": "option",
+      "option": [
+        "zed",
+        "hardware",
+        "gpu",
+        "nvidia",
+        "driver"
+      ],
+      "section": "hardware",
+      "title": "NVIDIA driver",
+      "type": "enum",
+      "choices": [
+        "none",
+        "nouveau",
+        "proprietary",
+        "proprietary-open"
+      ],
+      "reboot": true,
+      "explain": "nouveau is the free driver and works without network access. proprietary uses NVIDIA's driver (Maxwell to Volta GPUs); proprietary-open uses NVIDIA's driver with its open kernel module (Turing, 2018, and newer). The proprietary variants need 'Allow proprietary software' and are downloaded and built when applied. none: no NVIDIA GPU.",
+      "example": "nouveau"
+    },
+    {
+      "key": "hardware.bluetooth.enable",
+      "kind": "option",
+      "option": [
+        "hardware",
+        "bluetooth",
+        "enable"
+      ],
+      "section": "hardware",
+      "title": "Bluetooth",
+      "type": "bool",
+      "explain": "Runs the BlueZ Bluetooth daemon (zed-bluetooth service). Turn it off on machines without Bluetooth or when you do not use it, to reduce attack surface.",
+      "example": true
+    },
+    {
+      "key": "hardware.bluetooth.powerOnBoot",
+      "kind": "option",
+      "option": [
+        "hardware",
+        "bluetooth",
+        "powerOnBoot"
+      ],
+      "section": "hardware",
+      "title": "Power on Bluetooth adapters at boot",
+      "type": "bool",
+      "explain": "When off, Bluetooth adapters stay powered down until you switch them on.",
+      "example": true
+    },
+    {
+      "key": "power.cpuFreqGovernor",
+      "kind": "option",
+      "option": [
+        "powerManagement",
+        "cpuFreqGovernor"
+      ],
+      "section": "performance",
+      "title": "CPU frequency governor",
+      "type": "enum",
+      "nullable": true,
+      "choices": [
+        "schedutil",
+        "performance",
+        "powersave",
+        "ondemand",
+        "conservative"
+      ],
+      "explain": "Policy the kernel uses to scale CPU frequency. Unset leaves the driver's default. 'performance' keeps clocks high at the cost of power; 'powersave' on intel_pstate/amd_pstate still scales dynamically.",
+      "example": "schedutil"
+    },
+    {
+      "key": "desktop.enable",
+      "kind": "option",
+      "option": [
+        "zed",
+        "desktop",
+        "enable"
+      ],
+      "section": "desktop",
+      "title": "Graphical desktop",
+      "type": "bool",
+      "reboot": true,
+      "example": true,
+      "explain": "The Zed desktop: Wayland sessions on seatd, the greetd login screen, PipeWire audio, the Zed panel and lock screen, all supervised by s6. Turning it off leaves a text-console system."
+    },
+    {
+      "key": "desktop.sessions",
+      "kind": "option",
+      "option": [
+        "zed",
+        "desktop",
+        "sessions"
+      ],
+      "section": "desktop",
+      "title": "Desktop sessions",
+      "type": "list",
+      "items": {
+        "type": "enum",
+        "choices": [
+          "labwc",
+          "niri",
+          "sway"
+        ]
+      },
+      "maxItems": 8,
+      "example": [
+        "labwc",
+        "niri"
+      ],
+      "explain": "Sessions offered on the login screen; install several and choose at login. labwc: stacking windows (default). niri: scrollable tiling. sway: i3-style tiling. docs/DESKTOPS.md lists what each is verified to do on Zed and why GNOME and Plasma are not offered."
+    },
+    {
+      "key": "desktop.keyboardLayout",
+      "kind": "option",
+      "option": [
+        "services",
+        "xserver",
+        "xkb",
+        "layout"
+      ],
+      "section": "desktop",
+      "title": "Keyboard layout",
+      "type": "string",
+      "pattern": "^[a-z]{2,8}(,[a-z]{2,8}){0,3}$",
+      "explain": "XKB layout name(s) used by the desktop, such as 'us' or 'de,us'. The console keymap is set separately.",
+      "example": "us"
+    },
+    {
+      "key": "network.hostName",
+      "kind": "option",
+      "option": [
+        "networking",
+        "hostName"
+      ],
+      "section": "network",
+      "title": "Host name",
+      "type": "string",
+      "pattern": "^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$",
+      "explain": "The machine's name on the local network. It is visible to other devices on networks you join and in DHCP requests.",
+      "example": "zedtest"
+    },
+    {
+      "key": "network.wifiMacAddress",
+      "kind": "option",
+      "option": [
+        "networking",
+        "networkmanager",
+        "wifi",
+        "macAddress"
+      ],
+      "section": "privacy",
+      "title": "Wi-Fi MAC address",
+      "type": "enum",
+      "choices": [
+        "preserve",
+        "permanent",
+        "random",
+        "stable",
+        "stable-ssid"
+      ],
+      "explain": "random uses a new hardware address for every connection, so networks cannot recognise the device across visits. stable keeps one address per network. permanent always uses the adapter's burned-in address. Some captive portals and MAC-filtered networks need 'stable' or 'permanent'.",
+      "example": "preserve"
+    },
+    {
+      "key": "network.ethernetMacAddress",
+      "kind": "option",
+      "option": [
+        "networking",
+        "networkmanager",
+        "ethernet",
+        "macAddress"
+      ],
+      "section": "privacy",
+      "title": "Ethernet MAC address",
+      "type": "enum",
+      "choices": [
+        "preserve",
+        "permanent",
+        "random",
+        "stable"
+      ],
+      "explain": "Same choices as for Wi-Fi, applied to wired connections.",
+      "example": "preserve"
+    },
+    {
+      "key": "firewall.enable",
+      "kind": "option",
+      "option": [
+        "networking",
+        "firewall",
+        "enable"
+      ],
+      "section": "firewall",
+      "title": "Firewall",
+      "type": "bool",
+      "danger": "Turning the firewall off exposes every listening service to the networks this machine joins.",
+      "explain": "The nftables firewall drops unsolicited incoming connections. It is loaded fail-closed: if the ruleset cannot be applied, networking does not start.",
+      "example": true
+    },
+    {
+      "key": "firewall.allowedTCPPorts",
+      "kind": "option",
+      "option": [
+        "networking",
+        "firewall",
+        "allowedTCPPorts"
+      ],
+      "section": "firewall",
+      "title": "Open TCP ports",
+      "type": "list",
+      "items": {
+        "type": "int",
+        "min": 1,
+        "max": 65535
+      },
+      "maxItems": 64,
+      "explain": "Incoming TCP ports accepted from any network. Only open ports for services you run and intend to reach from other machines.",
+      "example": [
+        22,
+        443
+      ]
+    },
+    {
+      "key": "firewall.allowedUDPPorts",
+      "kind": "option",
+      "option": [
+        "networking",
+        "firewall",
+        "allowedUDPPorts"
+      ],
+      "section": "firewall",
+      "title": "Open UDP ports",
+      "type": "list",
+      "items": {
+        "type": "int",
+        "min": 1,
+        "max": 65535
+      },
+      "maxItems": 64,
+      "explain": "Incoming UDP ports accepted from any network.",
+      "example": [
+        51820
+      ]
+    },
+    {
+      "key": "firewall.logRefusedConnections",
+      "kind": "option",
+      "option": [
+        "networking",
+        "firewall",
+        "logRefusedConnections"
+      ],
+      "section": "firewall",
+      "title": "Log refused connections",
+      "type": "bool",
+      "explain": "Writes a kernel log line for every dropped connection attempt. Useful for diagnosis; noisy on busy networks.",
+      "example": true
+    },
+    {
+      "key": "services.openssh",
+      "kind": "option",
+      "option": [
+        "services",
+        "openssh",
+        "enable"
+      ],
+      "section": "services",
+      "title": "SSH server",
+      "type": "bool",
+      "danger": "Enabling the SSH server lets other machines attempt to log in. Use key-based authentication.",
+      "explain": "OpenSSH server (zed-sshd service). NixOS opens its port in the firewall automatically while it is enabled.",
+      "example": true
+    },
+    {
+      "key": "services.openssh.passwordAuthentication",
+      "kind": "option",
+      "option": [
+        "services",
+        "openssh",
+        "settings",
+        "PasswordAuthentication"
+      ],
+      "section": "services",
+      "title": "SSH password logins",
+      "type": "bool",
+      "explain": "When off, only key-based logins are accepted, which resists password guessing.",
+      "example": true
+    },
+    {
+      "key": "services.tor",
+      "kind": "option",
+      "option": [
+        "services",
+        "tor",
+        "enable"
+      ],
+      "section": "privacy",
+      "title": "Tor daemon",
+      "type": "bool",
+      "explain": "Runs a system Tor daemon (zed-tor service). On its own this routes nothing: applications must be configured to use it. Tor Browser bundles its own Tor and does not need this.",
+      "example": true
+    },
+    {
+      "key": "services.tor.client",
+      "kind": "option",
+      "option": [
+        "services",
+        "tor",
+        "client",
+        "enable"
+      ],
+      "section": "privacy",
+      "title": "Tor SOCKS client port",
+      "type": "bool",
+      "explain": "Offers Tor's SOCKS proxy on 127.0.0.1:9050 for applications that you configure to use it.",
+      "example": true
+    },
+    {
+      "key": "services.disabled",
+      "kind": "special",
+      "section": "services",
+      "title": "Services not started at boot",
+      "type": "list",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.@-]{0,63}$"
+      },
+      "maxItems": 128,
+      "explain": "s6-rc services removed from the boot bundle. They stay installed and can be started by hand with 'zed services start NAME'. Core services that the system cannot boot without are refused.",
+      "example": [
+        "zed-chrony"
+      ]
+    },
+    {
+      "key": "locale.timeZone",
+      "kind": "option",
+      "option": [
+        "time",
+        "timeZone"
+      ],
+      "section": "locale",
+      "title": "Time zone",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_+-]+(/[A-Za-z0-9_+-]+){0,2}$",
+      "validator": "timezone",
+      "explain": "IANA time zone, for example 'Europe/Berlin'.",
+      "example": "Europe/Berlin"
+    },
+    {
+      "key": "locale.defaultLocale",
+      "kind": "option",
+      "option": [
+        "i18n",
+        "defaultLocale"
+      ],
+      "section": "locale",
+      "title": "System language",
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(_[A-Z]{2})?\\.UTF-8$",
+      "explain": "Locale for messages, dates and number formats, for example 'en_US.UTF-8'.",
+      "example": "en_US.UTF-8"
+    },
+    {
+      "key": "locale.consoleKeyMap",
+      "kind": "option",
+      "option": [
+        "console",
+        "keyMap"
+      ],
+      "section": "locale",
+      "title": "Console keymap",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,32}$",
+      "explain": "Keyboard layout for text consoles (tty1-6 and the recovery console on tty9).",
+      "example": "us"
+    },
+    {
+      "key": "privacy.profile",
+      "kind": "option",
+      "option": [
+        "zed",
+        "privacy",
+        "profile"
+      ],
+      "section": "privacy",
+      "title": "Privacy profile",
+      "type": "enum",
+      "choices": [
+        "standard",
+        "private",
+        "custom"
+      ],
+      "explain": "standard: firewall on, nothing listening, no telemetry. private: additionally randomises MAC addresses, disables Bluetooth power-on, hides the host name from DHCP and turns on IPv6 privacy addresses. custom: no profile changes; use the individual settings. No profile makes the machine anonymous; see Zed Veil for Tor and isolated workspaces.",
+      "example": "private"
+    },
+    {
+      "key": "security.sudoWheelNeedsPassword",
+      "kind": "option",
+      "option": [
+        "security",
+        "sudo",
+        "wheelNeedsPassword"
+      ],
+      "section": "security",
+      "title": "sudo asks for a password",
+      "type": "bool",
+      "danger": "Without a password, any program running as an administrator account can become root silently.",
+      "explain": "Whether members of the wheel group must enter their password for sudo.",
+      "example": true
+    },
+    {
+      "key": "security.ptraceScope",
+      "kind": "option",
+      "option": [
+        "boot",
+        "kernel",
+        "sysctl",
+        "kernel.yama.ptrace_scope"
+      ],
+      "section": "security",
+      "title": "Process tracing restriction",
+      "type": "int",
+      "min": 0,
+      "max": 3,
+      "explain": "Yama ptrace scope. 1 (Zed's default) lets a process debug only its own children; 0 allows any same-user process, which some debuggers and reverse-engineering tools expect; 2 limits tracing to root; 3 disables it entirely until reboot.",
+      "example": 1
+    },
+    {
+      "key": "nix.maxJobs",
+      "kind": "option",
+      "option": [
+        "nix",
+        "settings",
+        "max-jobs"
+      ],
+      "section": "nix",
+      "title": "Parallel Nix builds",
+      "type": "int",
+      "min": 1,
+      "max": 64,
+      "explain": "How many derivations Nix builds at the same time during updates and installs.",
+      "example": 1
+    },
+    {
+      "key": "nix.cores",
+      "kind": "option",
+      "option": [
+        "nix",
+        "settings",
+        "cores"
+      ],
+      "section": "nix",
+      "title": "CPU cores per build",
+      "type": "int",
+      "min": 0,
+      "max": 256,
+      "explain": "Cores each build may use. 0 means all cores.",
+      "example": 128
+    },
+    {
+      "key": "nix.allowUnfree",
+      "kind": "option",
+      "option": [
+        "nixpkgs",
+        "config",
+        "allowUnfree"
+      ],
+      "section": "nix",
+      "title": "Allow proprietary software",
+      "type": "bool",
+      "explain": "Lets Zed Arsenal and 'zed install' install packages whose licence is not free (for example some drivers and Burp Suite). Their licence is always shown before installation.",
+      "example": true
+    }
+  ]
+}

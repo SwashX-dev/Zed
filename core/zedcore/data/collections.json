@@ -1,0 +1,112 @@
+{
+  "comment": "Zed tool collections. Every package is a nixpkgs attribute path in Zed's pinned package set; the `registry` flake check fails if one is missing. Tools are for authorised assessment, learning and defence of systems you own or have permission to test. Collections contain only freely licensed packages; proprietary tools (for example volatility3) can be installed individually once nix.allowUnfree is enabled.",
+  "collections": [
+    {
+      "id": "network-analysis",
+      "title": "Network analysis",
+      "category": "Networking",
+      "description": "Capture, inspect and map network traffic and hosts.",
+      "packages": [
+        "wireshark",
+        "tcpdump",
+        "nmap",
+        "termshark",
+        "iperf3",
+        "mtr",
+        "dnsutils",
+        "socat",
+        "netcat-openbsd"
+      ]
+    },
+    {
+      "id": "web-assessment",
+      "title": "Web application assessment",
+      "category": "Web",
+      "description": "Proxies and scanners for testing web applications you are authorised to assess.",
+      "packages": [
+        "zap",
+        "sqlmap",
+        "nikto",
+        "ffuf",
+        "gobuster",
+        "whatweb"
+      ]
+    },
+    {
+      "id": "forensics",
+      "title": "Digital forensics",
+      "category": "Forensics",
+      "description": "Disk, file-system and memory analysis and data recovery.",
+      "packages": [
+        "sleuthkit",
+        "autopsy",
+        "testdisk",
+        "binwalk",
+        "foremost",
+        "exiftool",
+        "ddrescue"
+      ]
+    },
+    {
+      "id": "reverse-engineering",
+      "title": "Reverse engineering",
+      "category": "Reverse engineering",
+      "description": "Disassemblers, decompilers and debuggers.",
+      "packages": [
+        "ghidra",
+        "radare2",
+        "rizin",
+        "cutter",
+        "gdb",
+        "imhex",
+        "binutils"
+      ]
+    },
+    {
+      "id": "password-auditing",
+      "title": "Password auditing",
+      "category": "Passwords",
+      "description": "Test the strength of password hashes you are responsible for.",
+      "packages": [
+        "john",
+        "hashcat"
+      ]
+    },
+    {
+      "id": "cryptography",
+      "title": "Cryptography",
+      "category": "Cryptography",
+      "description": "Encryption, signing and key management tools.",
+      "packages": [
+        "openssl",
+        "gnupg",
+        "age",
+        "minisign",
+        "step-cli"
+      ]
+    },
+    {
+      "id": "incident-response",
+      "title": "Incident response and hardening",
+      "category": "Defence",
+      "description": "Audit, scan and triage systems you administer.",
+      "packages": [
+        "lynis",
+        "clamav",
+        "yara",
+        "osquery"
+      ]
+    },
+    {
+      "id": "wireless",
+      "title": "Wireless analysis",
+      "category": "Wireless",
+      "description": "Survey and audit Wi-Fi networks you own or are authorised to test.",
+      "packages": [
+        "aircrack-ng",
+        "kismet",
+        "wavemon"
+      ]
+    }
+  ]
+}

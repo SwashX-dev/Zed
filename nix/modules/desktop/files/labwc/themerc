@@ -1,0 +1,24 @@
+# Zed window decorations for labwc.
+border.width: 2
+padding.height: 6
+titlebar.height: 30
+window.active.border.color: #c41e3a
+window.inactive.border.color: #26262c
+window.active.title.bg.color: #121216
+window.inactive.title.bg.color: #0b0b0d
+window.active.label.text.color: #ffffff
+window.inactive.label.text.color: #6d6d75
+window.label.text.justify: left
+window.active.button.unpressed.image.color: #ff5a73
+window.inactive.button.unpressed.image.color: #4a4a52
+window.active.button.close.hover.bg.color: #c41e3a
+menu.items.bg.color: #121216
+menu.items.text.color: #e8e8ec
+menu.items.active.bg.color: #c41e3a
+menu.items.active.text.color: #ffffff
+menu.separator.color: #2a2a30
+menu.border.color: #c41e3a
+menu.border.width: 1
+osd.bg.color: #121216
+osd.border.color: #c41e3a
+osd.label.text.color: #e8e8ec
